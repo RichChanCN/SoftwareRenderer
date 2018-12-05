@@ -13,10 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{335bf20c-98da-4f1d-9011-f1f56f12a8b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SRVector.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="SRMatrix4x4.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
