@@ -2,14 +2,14 @@
 #define __SRMATRIX4X4_H__
 #include<cmath>
 //默认是列主序，对标OpenGL
-class Matrix4x4
+class SRMatrix4x4
 {
 public:
-    Matrix4x4(){
+    SRMatrix4x4(){
         toIdentity();
     }
 
-    Matrix4x4(  float m01, float m02, float m03, float m04,
+    SRMatrix4x4(  float m01, float m02, float m03, float m04,
                 float m05, float m06, float m07, float m08,
                 float m09, float m10, float m11, float m12,
                 float m13, float m14, float m15, float m16){
@@ -31,14 +31,35 @@ public:
         mat[15] = m16;
     }
 
-    Matrix4x4(const Matrix4x4& matrix){
+    SRMatrix4x4(const SRMatrix4x4& matrix){
         for(int i = 0; i < 16; ++i){
             mat[i] = matrix[i];
         }
     }
 
-    Matrix4x4 operator*(const Matrix4x4& matrix) const{
-        return Matrix4x4(
+    SRMatrix4x4& operator=(const SRMatrix4x4& matrix){
+        mat[0] = matrix[0];
+        mat[1] = matrix[1];
+        mat[2] = matrix[2];
+        mat[3] = matrix[3];
+        mat[4] = matrix[4];
+        mat[5] = matrix[5];
+        mat[6] = matrix[6];
+        mat[7] = matrix[7];
+        mat[8] = matrix[8];
+        mat[9] = matrix[9];
+        mat[10] =matrix[10];
+        mat[11] =matrix[11];
+        mat[12] =matrix[12];
+        mat[13] =matrix[13];
+        mat[14] =matrix[14];
+        mat[15] =matrix[15];
+
+        return *this;
+    }
+
+    SRMatrix4x4 operator*(const SRMatrix4x4& matrix) const{
+        return SRMatrix4x4(
             mat[0] * matrix[0]  + mat[4] * matrix[1]  + mat[8] * matrix[2]  + mat[12] * matrix[3],
             mat[0] * matrix[4]  + mat[4] * matrix[5]  + mat[8] * matrix[6]  + mat[12] * matrix[7],
             mat[0] * matrix[8]  + mat[4] * matrix[9]  + mat[8] * matrix[10] + mat[12] * matrix[11],
@@ -61,8 +82,29 @@ public:
             );
     }
 
-    Matrix4x4 operator+(const Matrix4x4& matrix) const{
-        return Matrix4x4(
+    SRMatrix4x4 operator*(const float& rate) const{
+        return SRMatrix4x4(
+            mat[0] * rate,
+            mat[1] * rate,
+            mat[2] * rate,
+            mat[3] * rate,
+            mat[4] * rate,
+            mat[5] * rate,
+            mat[6] * rate,
+            mat[7] * rate,
+            mat[8] * rate,
+            mat[9] * rate,
+            mat[10] * rate,
+            mat[11] * rate,
+            mat[12] * rate,
+            mat[13] * rate,
+            mat[14] * rate,
+            mat[15] * rate
+            );
+    }
+
+    SRMatrix4x4 operator+(const SRMatrix4x4& matrix) const{
+        return SRMatrix4x4(
             mat[0]  + matrix[0],
             mat[1]  + matrix[1],
             mat[2]  + matrix[2],
@@ -82,8 +124,8 @@ public:
             );
     }
 
-    Matrix4x4 operator-() const{
-        return Matrix4x4(
+    SRMatrix4x4 operator-() const{
+        return SRMatrix4x4(
             -mat[0],
             -mat[1],
             -mat[2],
@@ -103,8 +145,8 @@ public:
             );
     }
 
-    Matrix4x4 operator-(const Matrix4x4& matrix) const{
-        return Matrix4x4(*this + (-matrix));
+    SRMatrix4x4 operator-(const SRMatrix4x4& matrix) const{
+        return SRMatrix4x4(*this + (-matrix));
     }
 
     float operator[](int index) const{
@@ -117,32 +159,5 @@ public:
 private:
     float mat[16];
 };
-
-void Matrix4x4::toZero(){
-    mat[0] = 0.0f;
-    mat[1] = 0.0f;
-    mat[2] = 0.0f;
-    mat[3] = 0.0f;
-    mat[4] = 0.0f;
-    mat[5] = 0.0f;
-    mat[6] = 0.0f;
-    mat[7] = 0.0f;
-    mat[8] = 0.0f;
-    mat[9] = 0.0f;
-    mat[10] = 0.0f;
-    mat[11] = 0.0f;
-    mat[12] = 0.0f;
-    mat[13] = 0.0f;
-    mat[14] = 0.0f;
-    mat[15] = 0.0f;
-}
-
-void Matrix4x4::toIdentity(){
-    toZero();
-    mat[0] = 1.0f;
-    mat[5] = 1.0f;
-    mat[10] = 1.0f;
-    mat[15] = 1.0f;
-}
 
 #endif

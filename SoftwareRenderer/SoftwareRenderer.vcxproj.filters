@@ -16,9 +16,30 @@
     <Filter Include="math">
       <UniqueIdentifier>{335bf20c-98da-4f1d-9011-f1f56f12a8b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pipeline">
+      <UniqueIdentifier>{1ebc5c07-664b-4440-8906-315216072598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="device">
+      <UniqueIdentifier>{22535474-ac18-46e0-9d89-b1c030e9f888}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SRDevice.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="MathUtils.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="SRMatrix4x4.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="My3DApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyGL.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,6 +48,21 @@
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="SRMatrix4x4.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="SRDevice.h">
+      <Filter>device</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtils.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="My3DApp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyGL.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SRVertex.h">
       <Filter>math</Filter>
     </ClInclude>
   </ItemGroup>

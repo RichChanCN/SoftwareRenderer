@@ -3,28 +3,44 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <time.h>
 #pragma comment(lib, "winmm.lib")
+#include "SRDevice.h"
+#include "My3DApp.h"
 using namespace std;
 
+#define NEED_CONSOLE
 
 HINSTANCE				g_hInstance;				//实例句柄
 static HWND				g_hWnd;					//窗口句柄
-string					g_title = "TinyD3D";		//窗口标题
+string					g_title = "SRdemo";		//窗口标题
 int						g_width = 800;			//窗口大小
 int						g_height = 600;
 
+DWORD g_startFrameTime = 0;
+DWORD g_curFrameTime = 0;
 
-UINT*                   m_pFrameBuffer;
-int                     i = 0;
+SRDevice                *g_device;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-void SetFrameBuffer();
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)
 {
+#ifdef NEED_CONSOLE
+    AllocConsole();
+    FILE* stream;
+    freopen_s(&stream, "CON", "r", stdin);//重定向输入流
+    freopen_s(&stream, "CON", "w", stdout);//重定向输入流
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+#endif
+
+    //模拟显示器设备
+    g_device = new SRDevice(g_width, g_height);
+    //app
+    My3DApp myApp = My3DApp(g_device);
 
     //窗口类结构体
     WNDCLASSEX wcex;
@@ -57,6 +73,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     }
 
     ShowWindow(g_hWnd, nShowCmd);
+    g_startFrameTime = GetTickCount();
 
     MSG msg;
     ZeroMemory(&msg, sizeof(msg));
@@ -69,25 +86,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         else
         {
-            SetFrameBuffer();
+            g_curFrameTime = GetTickCount();
+            g_curFrameTime = g_curFrameTime - g_startFrameTime;
+            myApp.render(g_curFrameTime);
             InvalidateRect(g_hWnd, nullptr, true);
             UpdateWindow(g_hWnd);
         }
     }
+
     return static_cast<int>(msg.wParam);
-}
-
-//颜色ZCFloat3(r,b,g,a)转化为UINT
-UINT ColorToUINT(float x, float y, float z)
-{
-    BYTE red = 255 * x/*  color.w*/;
-    BYTE green = 255 * y/* color.w*/;
-    BYTE blue = 255 * z /* color.w*/;
-    return (UINT)((BYTE)blue | (WORD)((BYTE)green << 8) | (DWORD)((BYTE)red << 16));
-}
-
-void SetFrameBuffer(){
-    m_pFrameBuffer[12000+i++] = ColorToUINT(1.0f, 1.0f, 1.0f);
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -120,7 +127,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                       //获得前置缓冲区dc
                       HDC hdc = GetDC(hWnd);
                       if (!(s_hBitmap = CreateDIBSection(nullptr, (PBITMAPINFO)&bmphdr, DIB_RGB_COLORS,
-                          reinterpret_cast<void**>(&m_pFrameBuffer), nullptr, 0)))
+                          reinterpret_cast<void**>(&g_device->getFrameBuffer()), nullptr, 0)))
                       {
                           MessageBox(nullptr, "create dib section failed!", "error", MB_OK);
                           return 0;
